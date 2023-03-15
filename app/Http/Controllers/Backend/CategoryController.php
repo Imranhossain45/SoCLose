@@ -46,7 +46,6 @@ class CategoryController extends Controller
         ]);
         Category::create([
             'name'  => $request->name,
-
         ]);
         return back()->with('success', 'Category Added Successful!');
     }
@@ -87,9 +86,9 @@ class CategoryController extends Controller
             'name'  => 'required|unique:categories,name',
         ]);
 
-        $category->name = $request->name;
-        $category->save();
-
+        $category->update([
+            'name'  => $request->name,
+        ]);
 
         return redirect(route('backend.category.index'))->with('success', 'Category info Edited');
     }

@@ -18,17 +18,12 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes(['verify' => true]);
 
 Route::controller(FrontendController::class)->name('frontend.')->group(function () {
 
     Route::get('/', 'index')->name('index');
-    Route::get('/', 'portfolio')->name('portfolio');
-    /* Route::get('/', 'vehicle')->name('vehicle'); */
 });
 
 Route::middleware(['auth'])->group(

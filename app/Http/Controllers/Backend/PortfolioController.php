@@ -31,7 +31,7 @@ class PortfolioController extends Controller
     public function create()
     {
         $categories = Category::get(['id', 'name']);
-        return view('backend.portfolio.create',compact('categories'));
+        return view('backend.portfolio.create', compact('categories'));
     }
 
     /**
@@ -79,7 +79,7 @@ class PortfolioController extends Controller
     public function edit(Portfolio $portfolio)
     {
         $categories = Category::get(['id', 'name']);
-        return view('backend.portfolio.edit',compact('portfolio', 'categories'));
+        return view('backend.portfolio.edit', compact('portfolio', 'categories'));
     }
 
     /**
@@ -101,14 +101,13 @@ class PortfolioController extends Controller
             if (file_exists($path)) {
                 unlink($path);
             }
-
             $photoName = uniqid() . '.' . $photo->getClientOriginalExtension();
             Image::make($photo)->save(public_path('storage/portfolio/' . $photoName));
         }
-        
-        $portfolio->category_id = $request->category;
-        $portfolio->photo = $photoName;
-        $portfolio->save();
+        $portfolio->update([
+            $portfolio->category_id = $request->category,
+            $portfolio->photo       = $photoName,
+        ]);
         return redirect(route('backend.portfolio.index'))->with('success', 'Portfolio Update Successfull!');
     }
 

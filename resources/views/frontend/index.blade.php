@@ -1,3 +1,7 @@
+@php
+  use App\Http\Controllers\Frontend\FrontendController;
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,7 +10,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>SoClose</title>
-  <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap.min.css') }}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="{{ asset('frontend/assets/css/style.css') }}">
 </head>
@@ -45,23 +48,25 @@
             @auth
               <li>
                 <div class="dropdown ">
-                  <button class="dropdown-toggle btn btn-success" type="button" data-toggle="dropdown"
+                  <button class="dropdown-toggle btn btn-success" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     {{ Auth::user()->name }}
                   </button>
-                  <div class="dropdown-menu ">
-                    <a class="dropdown-item" href="{{ route('logout') }}"
-                      onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                  <ul class="dropdown-menu ">
+                    <li>
+                      <a class="dropdown-item" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                      document.getElementById('logout-form').submit();">
+                        <div class="btn-danger">
+                          {{ __('Logout') }}
+                        </div>
 
-                      {{ __('Logout') }}
-
-                    </a>
-
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                      @csrf
-                    </form>
-                  </div>
+                      </a>
+                      <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                      </form>
+                    </li>
+                  </ul>
                 </div>
               </li>
             @else
@@ -83,38 +88,37 @@
       <!-- Portfolio Cards Container -->
 
       <div class="row grid">
-        {{-- @foreach ($allPortfolios as $portfolio)
-          <div class="grid-item col-lg-4 col-sm-6 *">
+        @php
+          $vehicles = FrontendController::get_images('Vehicle')
+        @endphp
+        @foreach ($vehicles as $vehicle)
+          <div class="grid-item col-lg-4 col-sm-6 vehicle">
             <a href="#!" class="portfolio__card position-relative d-inline-block w-100">
-              <img src="{{ asset('storage/portfolio/' . $portfolio->photo) }}" alt="Random Image" class="w-100">
+
+              <img src="{{ asset('storage/portfolio/' . $vehicle->photo) }}" alt="Random Image" class="w-100">
+
             </a>
           </div>
-        @endforeach    --}}
-        
-        
-        @foreach ($vehicles as $vehicle)
-        <div class="grid-item col-lg-4 col-sm-6 vehicle">
-          <a href="#!" class="portfolio__card position-relative d-inline-block w-100">
-            
-							<img src="{{ asset('storage/portfolio/' . $vehicle->photo) }}" alt="Random Image" class="w-100">
-						
-          </a>
-        </div>
-				@endforeach
-        @foreach ($animals as $animal)
-          
-        <div class="grid-item col-lg-4 col-sm-6 animal">
-          <a href="#!" class="portfolio__card position-relative d-inline-block w-100">
-            <img src="{{ asset('storage/portfolio/' . $animal->photo) }}" alt="Random Image" class="w-100">
-          </a>
-        </div>
         @endforeach
-        @foreach ($workstations as $workstation)          
-        <div class="grid-item col-lg-4 col-sm-6 work-station">
-          <a href="#!" class="portfolio__card position-relative d-inline-block w-100">
-            <img src="{{ asset('storage/portfolio/' . $workstation->photo) }}" alt="Random Image" class="w-100">
-          </a>
-        </div>
+         @php
+          $animals = FrontendController::get_images('Animal')
+        @endphp
+        @foreach ($animals as $animal)
+          <div class="grid-item col-lg-4 col-sm-6 animal">
+            <a href="#!" class="portfolio__card position-relative d-inline-block w-100">
+              <img src="{{ asset('storage/portfolio/' . $animal->photo) }}" alt="Random Image" class="w-100">
+            </a>
+          </div>
+        @endforeach
+        @php
+          $workstations = FrontendController::get_images('Work Station')
+        @endphp
+        @foreach ($workstations as $workstation)
+          <div class="grid-item col-lg-4 col-sm-6 work-station">
+            <a href="#!" class="portfolio__card position-relative d-inline-block w-100">
+              <img src="{{ asset('storage/portfolio/' . $workstation->photo) }}" alt="Random Image" class="w-100">
+            </a>
+          </div>
         @endforeach
       </div>
     </div>
@@ -122,7 +126,6 @@
 
   <!-- Portfolio Section End -->
   <script src="{{ asset('frontend/assets/js/jquery.min.js') }}"></script>
-  <script src="{{ asset('frontend/assets/js/bootstrap.min.js') }}"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{{ asset('frontend/assets/js/script.js') }}"></script>
   <script src="{{ asset('frontend/assets/js/isotope.pkgd.min.js') }}"></script>

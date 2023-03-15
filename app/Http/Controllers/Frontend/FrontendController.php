@@ -9,10 +9,27 @@ use Illuminate\Http\Request;
 
 class FrontendController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view('frontend.index');
     }
-    public function portfolio(){
+
+    /* process one */
+
+    public static function get_images($category)
+    {
+        $images = Portfolio::whereIn('category_id', function ($query) use ($category) {
+            $query->select('id')
+                ->from(with(new Category())->getTable())
+                ->where('name', $category)
+                ->where('status', 'publish');
+        })->get();
+        return $images;
+    }
+
+
+    /* process two
+     public function index(){
         $vehicles = Portfolio::whereIn('category_id', function ($query) {
             $query->select('id')
             ->from(with(new Category())->getTable())           
@@ -32,5 +49,5 @@ class FrontendController extends Controller
             ->where('status', 'publish');
         })->get();
         return view('frontend.index',compact('vehicles', 'animals', 'workstations'));
-    }
+    } */
 }

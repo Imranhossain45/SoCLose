@@ -93,7 +93,7 @@ class PortfolioController extends Controller
     {
         $photo = $request->file('photo');
         $request->validate([
-            'photo' => 'nullable|mimes:jpg,jpeg,png|max:2000',
+            'photo' => 'required|mimes:jpg,jpeg,png|max:2000',
             'category' => 'required',
         ]);
         if ($photo) {

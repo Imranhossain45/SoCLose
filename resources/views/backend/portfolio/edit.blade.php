@@ -25,19 +25,19 @@
             <div class="card-body">
               <form action="{{ route('backend.portfolio.update',$portfolio->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class=" form-group">
+                <div class="form-group">
                   <label for="">Category</label>
-                <select name="category" class=" form-control" >
+                <select name="category" class="form-control" required>
                   <option selected disabled>Select Category</option>
                   @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    <option value="{{ $category->id }}" {{ $category->id == $portfolio->category_id ? 'selected' : '' }}>{{ $category->name }}</option>
                   @endforeach
                 </select>
                 </div>
 
                 <div class=" form-group">
                   <b>Photo:</b>
-                  <input type="file" name="photo" class=" form-control" >
+                  <input type="file" name="photo" class=" form-control" required>
                   <img src="{{ asset('storage/portfolio/' . $portfolio->photo) }}" width="60" alt="image">
                 </div>
                 <button type="submit" name="submit" class="btn btn-primary mt-3">Update</button>

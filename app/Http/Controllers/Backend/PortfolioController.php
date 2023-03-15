@@ -78,7 +78,8 @@ class PortfolioController extends Controller
      */
     public function edit(Portfolio $portfolio)
     {
-        return view('backend.portfolio.edit',compact('portfolio'));
+        $categories = Category::get(['id', 'name']);
+        return view('backend.portfolio.edit',compact('portfolio', 'categories'));
     }
 
     /**
@@ -92,7 +93,7 @@ class PortfolioController extends Controller
     {
         $photo = $request->file('photo');
         $request->validate([
-            'photo' => 'nullable|mimes:jpg,jpeg,png|max:512',
+            'photo' => 'nullable|mimes:jpg,jpeg,png|max:2000',
             'category' => 'required',
         ]);
         if ($photo) {
@@ -103,8 +104,6 @@ class PortfolioController extends Controller
 
             $photoName = uniqid() . '.' . $photo->getClientOriginalExtension();
             Image::make($photo)->save(public_path('storage/portfolio/' . $photoName));
-        } else {
-            $photoName = $portfolio->photo;
         }
         
         $portfolio->category_id = $request->category;
